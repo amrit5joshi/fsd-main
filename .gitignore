@@ -1,0 +1,27 @@
+# Node.js / Express
+node_modules/
+package-lock.json
+
+# React
+frontend/node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Compiled output
+dist/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# Ignore specific files or directories
+# /path/to/file
+# /path/to/directory/
