@@ -3,6 +3,7 @@ import {useState} from 'react';
 
 const App = () => {
   const [transactionId, setTransactionId] = useState();
+  // currently i am not using these, but in actual program We send it from frontend
   const [customerId, setCustomerId] = useState();
   const [priceId, setPriceId] = useState();
 
@@ -43,6 +44,7 @@ const App = () => {
   };
 
   const createSubscription = async () => {
+    // we set these values using the usestate values that i have created above
     const priceId = 'price_id_here';
     const customerId = 'customer_id_here';
 
