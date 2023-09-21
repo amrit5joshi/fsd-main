@@ -10,10 +10,6 @@ app.use(express.json());
 app.post('/api/transactions', async (req, res) => {
   try {
     const { amount, currency, description, paymentMethod } = req.body;
-    
-    //const stripe = require("stripe")("sk_test_51NscgDL6VyPCdQrFp1Kz5Lr1SMS6DERCRaTN9nVMfRe70DCX15etVuQsSEtzrzQdwc36q2t7BKJLtww5F07j4byb00JtBiqv8g");
-    //stripe.setApiVersion('2020-08-27')
-   // console.log(req.body)
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
@@ -22,10 +18,8 @@ app.post('/api/transactions', async (req, res) => {
       confirm: true,
       return_url: 'http://localhost:3000'
     });
-   // console.log(paymentIntent)
     res.json(paymentIntent);
   } catch (err) {
-    console.log(err)
     res.status(500).json({ error: err });
   }
 });
@@ -50,6 +44,7 @@ app.post('/api/transactions/:id/refund', async (req, res) => {
 
 app.post('/api/subscriptions', async (req, res) => {
   try {
+      // in actual project, we will have already existing customer, here we just created a user to demonstate the subscription functionality
     const customer = await stripe.customers.create({        
         email: "amrit@gmail.com",
         name: "amrit",
@@ -58,16 +53,14 @@ app.post('/api/subscriptions', async (req, res) => {
           default_payment_method: "pm_card_visa",
         },
       });
-  
-      console.log(customer)
+      // creating product to subscribe
       const product = await stripe.products.create({
         name:"my product",
         description: "description of my product",
         type: 'service', 
         active: true, 
       });
-    console.log(customer)
-
+    // attaching price to the product
     const price = await stripe.prices.create({
         unit_amount: 1000,
         currency: "usd",
@@ -77,7 +70,7 @@ app.post('/api/subscriptions', async (req, res) => {
             'interval_count': 6
         },        
         });
-      console.log(price)
+      // creating the subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: price.id }],
